@@ -1,0 +1,39 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#thread {
+    padding: 10px;
+    background-color: #FFF;
+    font-family: serif;
+    text-align: left;
+    color: black;
+    max-width: 600px;
+}
+
+p {
+    margin: 10px 0;
+}
+
+input {
+    margin-right: 5px;
+    background-color: #FFF;
+    flex-grow: 1;
+    padding: 5px;
+}
+
+button {
+    background-color: #FFF;
+    padding: 5px 10px;
+}
+
+#form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    padding: 10px;
+    width: 600px;
+}

@@ -16,7 +16,7 @@ MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true, useNewUrlPar
     app.get('/post/:string', async (req, res) => {
         const CommentsCollection = db.collection('comments')
 
-        await CommentsCollection.insert({
+        await CommentsCollection.insertOne({
             value: req.params.string
         })
 
