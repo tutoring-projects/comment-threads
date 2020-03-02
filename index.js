@@ -1,16 +1,44 @@
 require('dotenv').config()
 
-const MongoClient = require('mongodb').MongoClient;
+const express = require('express')
+const app = express()
+const path = require('path')
+
+app.use(express.json())
+
+const MongoClient = require('mongodb').MongoClient
  
-// Connection URL
-const url = 'mongodb://localhost:27017';
- 
-// Database Name
-const dbName = 'myproject';
- 
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  console.log("Connected successfully to server");
- 
-  const db = client.db(dbName);
-});
+MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true }, (err, client) => {
+    console.log("Connected successfully to server")
+    
+    const db = client.db(process.env.DB_NAME)
+
+    app.get('/post/:string', async (req, res) => {
+        const CommentsCollection = db.collection('comments')
+
+        await CommentsCollection.insert({
+            value: req.params.string
+        })
+
+        res.send(`Successfully posted comment "${req.params.string}"`)
+    })
+
+    app.get('/list', async (req, res) => {
+        const CommentsCollection = db.collection('comments')
+
+        const comments = await CommentsCollection.find(
+            {}, 
+            { 
+                projection: { "_id": 0 } 
+            }
+        ).toArray()
+
+        res.json(comments)
+    })
+
+    app.use('/', express.static(path.join(__dirname, 'public')))
+})
+
+app.listen(80)
+
+console.log('Listening on port 80')
